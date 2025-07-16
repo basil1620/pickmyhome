@@ -1,0 +1,1 @@
+<?php // Approve/reject testimonials ?>

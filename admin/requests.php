@@ -1,0 +1,1 @@
+<?php // Handle house/flat requests ?>

@@ -1,0 +1,1 @@
+<?php // Show selected house details with image and blueprint download ?>

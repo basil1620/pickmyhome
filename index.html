@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pick My Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      color: #2d3436;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Background Sections */
+    .bg-section {
+      min-height: 100vh;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 40px;
+    }
+
+    .bg-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.2); /* Darker overlay for better contrast */
+    }
+
+    .bg-1 {
+      background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    }
+
+    .bg-2 {
+      background-image: url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    }
+
+    .bg-3 {
+      background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .topnav {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      color: white;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .nav-buttons button {
+      margin-left: 15px;
+      padding: 12px 24px;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 14px;
+    }
+
+    .nav-buttons button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 75, 43, 0.6);
+      background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    }
+
+    .sidenav {
+      position: fixed;
+      top: 74px;
+      left: 0;
+      background: linear-gradient(to bottom, #2c3e50, #4ca1af);
+      width: 220px;
+      padding: 25px;
+      height: calc(100% - 74px);
+      box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    .sidenav button {
+      padding: 14px;
+      width: 100%;
+      background: linear-gradient(45deg, #8e2de2, #4a00e0);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .sidenav button:hover {
+      transform: translateX(8px);
+      background: linear-gradient(45deg, #4a00e0, #8e2de2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    section {
+      margin-bottom: 40px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      padding: 60px;
+      margin-left: 240px;
+      animation: fadeInUp 1s ease;
+      border-left: 5px solid #ff5e62;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+      color: #1a2a6c;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100px;
+      height: 5px;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+      border-radius: 5px;
+    }
+
+    /* Split layout for the two CTAs */
+    .split-container {
+      display: flex;
+      gap: 30px;
+      margin: 40px 0;
+    }
+
+    .split-section {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cta-box {
+      text-align: center;
+      padding: 70px 40px;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+      color: white;
+      border-radius: 15px;
+      height: 100%;
+      animation: pulse 2s infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      transition: all 0.5s ease;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .cta-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .cta-box h2 {
+      font-size: 36px;
+      margin-bottom: 25px;
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .cta-box p {
+      font-size: 20px;
+      margin-bottom: 35px;
+      line-height: 1.7;
+    }
+
+    .cta-box button {
+      padding: 16px 35px;
+      background: white;
+      color: #ff5e62;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      align-self: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cta-box button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+      background: #f8f9fa;
+    }
+
+    .right-cta {
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+    }
+
+    .right-cta button {
+      color: #ff5e62;
+    }
+
+    .reviews ul {
+      list-style: none;
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .reviews li {
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      position: relative;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Buyer reviews (using Find Your Perfect Home color scheme) */
+    .reviews li:nth-child(odd) {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+      color: white;
+      border-left: 5px solid #ff9966;
+    }
+
+    /* Seller reviews (using Sell Your Property color scheme) */
+    .reviews li:nth-child(even) {
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+      color: white;
+      border-left: 5px solid #ff416c;
+    }
+
+    .reviews li:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .reviews li::before {
+      content: "“";
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 80px;
+      color: rgba(255, 255, 255, 0.1);
+      font-family: serif;
+      line-height: 1;
+    }
+
+    .reviews li p {
+      margin-bottom: 15px;
+      font-style: italic;
+      position: relative;
+      z-index: 1;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .reviews li span {
+      display: block;
+      text-align: right;
+      font-weight: bold;
+      font-style: normal;
+      font-size: 16px;
+    }
+
+    .testimonials {
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(227, 242, 253, 0.9));
+      backdrop-filter: blur(5px);
+    }
+
+    .testimonials h2 {
+      text-align: center;
+    }
+
+    .testimonials h2::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .about {
+      background: rgba(255,255,255,0.95);
+    }
+
+    .about p {
+      margin-bottom: 25px;
+      font-size: 18px;
+      line-height: 1.8;
+      color: #444;
+    }
+
+    .services {
+      background: rgba(248, 249, 250, 0.95);
+      backdrop-filter: blur(5px);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .service-card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      text-align: center;
+      border-top: 5px solid #ff5e62;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .service-card i {
+      font-size: 50px;
+      color: #ff5e62;
+      margin-bottom: 20px;
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover i {
+      transform: scale(1.2);
+    }
+
+    .service-card h3 {
+      margin-bottom: 20px;
+      color: #1a2a6c;
+      font-size: 22px;
+    }
+
+    .service-card p {
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-form {
+      background: linear-gradient(135deg, #fff, #f8f9fa);
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      animation: modalFadeIn 0.4s ease;
+      border-top: 5px solid #ff5e62;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-form::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-form h2 {
+      text-align: center;
+      color: #1a2a6c;
+      margin-bottom: 20px;
+      font-size: 28px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .modal-form h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+    }
+
+    .modal-form input {
+      padding: 15px 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.8);
+    }
+
+    .modal-form input:focus {
+      border-color: #ff5e62;
+      box-shadow: 0 0 0 3px rgba(255, 94, 98, 0.2);
+      outline: none;
+    }
+
+    .modal-form button {
+      padding: 15px;
+      border: none;
+      background: linear-gradient(45deg, #ff5e62, #ff9966);
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 5px 15px rgba(255, 94, 98, 0.4);
+    }
+
+    .modal-form button:hover {
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 94, 98, 0.6);
+    }
+
+    .modal-form button[type="button"] {
+      background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+      color: #666;
+    }
+
+    .modal-form button[type="button"]:hover {
+      background: linear-gradient(45deg, #e9ecef, #dee2e6);
+      color: #333;
+    }
+
+    .quote-section {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+      color: white;
+      padding: 80px 40px;
+      margin: 60px 20px 60px 240px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .quote-section blockquote {
+      font-size: 28px;
+      font-style: italic;
+      max-width: 800px;
+      margin: 0 auto 25px;
+      line-height: 1.7;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .quote-section cite {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin: 60px 0 40px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 30px;
+      min-width: 180px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      margin: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .stat-number {
+      font-size: 54px;
+      font-weight: bold;
+      color: #ff5e62;
+      margin-bottom: 15px;
+      transition: all 0.5s ease-out;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .stat-label {
+      font-size: 20px;
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Scroll animations */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .animate-on-scroll.animated {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1200px) {
+      .split-container {
+        flex-direction: column;
+      }
+      
+      section, .quote-section {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding: 50px;
+      }
+      
+      .sidenav {
+        width: 200px;
+        padding: 20px;
+      }
+      
+      .cta-box {
+        padding: 50px 30px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .topnav {
+        padding: 15px 25px;
+      }
+      
+      .logo {
+        font-size: 24px;
+      }
+      
+      .nav-buttons button {
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+      
+      section, .quote-section {
+        padding: 40px;
+      }
+      
+      .quote-section blockquote {
+        font-size: 24px;
+      }
+      
+      .services-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .topnav {
+        flex-direction: column;
+        padding: 15px;
+      }
+      
+      .nav-buttons {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .nav-buttons button {
+        margin: 5px;
+      }
+      
+      .sidenav {
+        display: none;
+      }
+      
+      section, .quote-section {
+        margin-left: 15px;
+        margin-right: 15px;
+        padding: 30px;
+      }
+      
+      section h2 {
+        font-size: 28px;
+      }
+      
+      .cta-box {
+        padding: 40px 20px;
+      }
+      
+      .cta-box h2 {
+        font-size: 28px;
+      }
+      
+      .stats {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stat-item {
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .modal-form {
+        width: 90%;
+        max-width: 400px;
+        padding: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section, .quote-section {
+        padding: 25px 20px;
+      }
+      
+      section h2 {
+        font-size: 24px;
+      }
+      
+      .cta-box h2 {
+        font-size: 24px;
+      }
+      
+      .cta-box p {
+        font-size: 16px;
+      }
+      
+      .quote-section blockquote {
+        font-size: 20px;
+      }
+      
+      .modal-form {
+        padding: 25px 20px;
+      }
+      
+      .modal-form h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <div class="logo">🏡 PICK MY HOME</div>
+    <div class="nav-buttons">
+      <button onclick="togglePopup('admin')">Admin Login</button>
+    </div>
+  </nav>
+
+  <div class="content-wrapper">
+    <section class="animate-on-scroll" style="margin-top: 40px;">
+      <h2>Sell or Buy Your Dream Property</h2>
+      <div class="split-container">
+        <div class="split-section animate-on-scroll">
+          <div class="cta-box">
+            <h2>Find Your Perfect Home</h2>
+            <p>Browse thousands of properties across Kerala - from traditional homes to modern apartments - and find your ideal match</p>
+            <button onclick="togglePopup('login')">Login Now To Explore</button>
+          </div>
+        </div>
+        <div class="split-section animate-on-scroll">
+          <div class="cta-box right-cta">
+            <h2>Sell Your Property</h2>
+            <p>"Sell your property directly to our company for a fair, market-aligned offer tailored to your financial needs. 
+              We ensure a seamless, efficient transaction with guaranteed terms and no unnecessary delays."</p>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <div class="bg-section bg-2">
+    <div class="content-wrapper">
+      <section class="testimonials animate-on-scroll">
+        <h2>What Our Clients Say</h2>
+        <div class="reviews">
+          <ul>
+            <li>
+              <p>Found my dream home within a week! The team understood exactly what I was looking for and made the buying process effortless.</p>
+              <span>- Ravi Kumar, Kochi</span>
+            </li>
+            <li>
+              <p>Sold my ancestral home at a great price. Their marketing team brought serious buyers quickly and handled all the paperwork.</p>
+              <span>- Neha Menon, Dubai</span>
+            </li>
+            <li>
+              <p>As a first-time buyer, I appreciated their guidance through every step. They helped me find a perfect flat within my budget.</p>
+              <span>- Aamir Hussain, Trivandrum</span>
+            </li>
+            <li>
+              <p>Their property valuation was accurate and fair. I got multiple offers within days of listing my apartment with them.</p>
+              <span>- Anjali Nair, Calicut</span>
+            </li>
+            <li>
+              <p>The team helped me buy land and then find the right builder. Now I have my dream villa exactly how I wanted it.</p>
+              <span>- Joseph Mathew, Kottayam</span>
+            </li>
+            <li>
+              <p>Excellent service for NRIs. They managed everything remotely and kept me updated throughout the purchase process.</p>
+              <span>- Priya Rajendran, Palakkad</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="quote-section animate-on-scroll">
+      <blockquote>
+        "Whether you're buying your first home or selling a cherished property, we're here to make your real estate journey smooth, transparent, and successful."
+      </blockquote>
+      <cite>- Our Promise</cite>
+    </div>
+
+    <section class="about animate-on-scroll">
+      <h2>About Pick My Home</h2>
+      <p>Since 2010, Pick My Home has been Kerala's trusted real estate platform, connecting buyers and sellers with transparency and expertise. We've revolutionized property transactions by combining local market knowledge with cutting-edge technology.</p>
+      <p>Our comprehensive services cover the entire real estate lifecycle - from property search and valuation to documentation and final transfer. Whether you're looking to buy your dream home or sell your property for the best price, our team of experienced professionals will guide you at every step.</p>
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number" data-target="12">0</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="850">0</div>
+          <div class="stat-label">Happy Families</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="14">0</div>
+          <div class="stat-label">Districts in Kerala</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="bg-section bg-3">
+    <div class="content-wrapper">
+      <section class="services animate-on-scroll">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <i>🏡</i>
+            <h3>Property Search</h3>
+            <p>Advanced search tools to find your perfect home, flat, or land with detailed filters and virtual tours.</p>
+          </div>
+          <div class="service-card">
+            <i>💰</i>
+            <h3>Property Valuation</h3>
+            <p>Accurate market valuations to help you price your property competitively for quick sale.</p>
+          </div>
+          <div class="service-card">
+            <i>📝</i>
+            <h3>Documentation</h3>
+            <p>End-to-end support for all legal paperwork, registration processes, and compliance with regulations.</p>
+          </div>
+          <div class="service-card">
+            <i>🤝</i>
+            <h3>Buyer-Seller Matching</h3>
+            <p>Smart algorithms and expert brokers to connect buyers with the right properties and vice versa.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Register Form -->
+  <div id="popup-register" class="popup">
+    <form action="register.php" method="post" class="modal-form">
+      <h2>Create Your Account</h2>
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="password" name="password" placeholder="Create Password" required>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      <button type="submit">Register Now</button>
+      <button type="button" onclick="togglePopup()">Back to Home</button>
+    </form>
+  </div>
+<!-- User Login Form -->
+<div id="popup-login" class="popup">
+  <form action="login.php" method="post" class="modal-form">
+    <h2>Welcome to pick my home</h2>
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <div style="text-align: right; margin-top: -15px;">
+      <button type="button" onclick="togglePopup('register')" style="background: none; border: none; color: #ff5e62; cursor: pointer; font-size: 10px; padding: 0; text-decoration: underline;">Don't have an account? Register now</button>
+    </div>
+    <button type="submit">Login</button>
+    <button type="button" onclick="togglePopup()">Back to Home</button>
+  </form>
+</div>
+    <!-- Admin Login Form -->
+  <div id="popup-admin" class="popup">
+    <form action="admin_login.php" method="post" class="modal-form">
+      <h2>Admin Login</h2>
+      <input type="text" name="name" placeholder="Admin Name" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <button type="button" onclick="togglePopup()">Back to Home</button>
+    </form>
+  </div>
+
+  <script>
+    function togglePopup(type) {
+      document.querySelectorAll(".popup").forEach(p => p.style.display = "none");
+      if (type) document.getElementById("popup-" + type).style.display = "flex";
+    }
+
+    // Scroll animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const animateElements = document.querySelectorAll('.animate-on-scroll');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animated');
+            
+            // If this is the about section, start counting
+            if (entry.target.classList.contains('about')) {
+              animateNumbers();
+            }
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+
+      animateElements.forEach(element => {
+        observer.observe(element);
+      });
+    });
+
+    // Smooth background transition
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.scrollY;
+      const bgSections = document.querySelectorAll('.bg-section');
+      
+      bgSections.forEach((section, index) => {
+        const sectionOffset = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        
+        if (scrollPosition > sectionOffset - window.innerHeight + sectionHeight * 0.5) {
+          section.style.opacity = '1';
+        } else {
+          section.style.opacity = '0.8';
+        }
+      });
+    });
+
+    // Number counting animation
+    function animateNumbers() {
+      const statNumbers = document.querySelectorAll('.stat-number');
+      const duration = 2000; // Animation duration in ms
+      const startTime = Date.now();
+      
+      statNumbers.forEach(stat => {
+        const target = parseInt(stat.getAttribute('data-target'));
+        const increment = target / (duration / 16); // Approximate 60fps
+        
+        let current = 0;
+        const updateNumber = () => {
+          const elapsed = Date.now() - startTime;
+          current = Math.min(current + increment, target);
+          
+          // Format numbers with commas if they're large
+          if (target >= 1000) {
+            stat.textContent = Math.floor(current).toLocaleString();
+          } else {
+            stat.textContent = Math.floor(current);
+          }
+          
+          if (current < target) {
+            requestAnimationFrame(updateNumber);
+          } else {
+            stat.textContent = target.toLocaleString();
+          }
+        };
+        
+        updateNumber();
+      });
+    }
+     document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === '1') {
+      alert("❌ Incorrect username or password. Please try again.");
+      togglePopup('login'); // Reopen login modal if needed
+    }
+  });
+  </script>
+</body>
+</html>

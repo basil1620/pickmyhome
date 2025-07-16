@@ -1,0 +1,1 @@
+<?php // Testimonials submission page ?>

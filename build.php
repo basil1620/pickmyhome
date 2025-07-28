@@ -353,6 +353,20 @@ header("Pragma: no-cache");
   
   <form action="build_result.php" method="post">
     <div class="form-section">
+      <h2>Preferred Land Size (in cents)</h2>
+      <div class="radio-group">
+        <input type="radio" id="land-10" name="land_size" value="around 10" class="radio-option" required>
+        <label for="land-10" class="radio-label">Around 10 cents</label>
+        
+        <input type="radio" id="land-15" name="land_size" value="around 15" class="radio-option">
+        <label for="land-15" class="radio-label">Around 15 cents</label>
+        
+        <input type="radio" id="land-20" name="land_size" value="around 20" class="radio-option">
+        <label for="land-20" class="radio-label">Around 20 cents</label>
+      </div>
+    </div>
+
+    <div class="form-section">
       <h2>Select Your Investment Range</h2>
       <div class="radio-group" id="budget-group">
         <input type="radio" id="budget-18-30" name="budget" value="18-30" class="radio-option" required onchange="updateOptions()">
@@ -367,18 +381,18 @@ header("Pragma: no-cache");
     </div>
 
     <div class="form-section">
-      <h2>Preferred Sq.ft</h2>
-      <div class="radio-group" id="sqft-group">
-        <input type="radio" id="sqft-default" name="sqft" value="" class="radio-option" disabled checked>
-        <label for="sqft-default" class="radio-label">Select budget first</label>
-      </div>
-    </div>
-
-    <div class="form-section">
       <h2>Preferred number of BHK</h2>
       <div class="radio-group" id="bhk-group">
         <input type="radio" id="bhk-default" name="bhk" value="" class="radio-option" disabled checked>
         <label for="bhk-default" class="radio-label">Select budget first</label>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h2>Preferred Sq.ft</h2>
+      <div class="radio-group" id="sqft-group">
+        <input type="radio" id="sqft-default" name="sqft" value="" class="radio-option" disabled checked>
+        <label for="sqft-default" class="radio-label">Select budget first</label>
       </div>
     </div>
 

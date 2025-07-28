@@ -36,7 +36,7 @@ header("Pragma: no-cache");
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
-      background: url('flat-building.jpg') center/cover no-repeat fixed;
+      background: url('flat.jpg') center/cover no-repeat fixed;
     }
 
     .overlay {
@@ -358,9 +358,6 @@ header("Pragma: no-cache");
         
         <input type="radio" id="budget-40-60" name="budget" value="40-60" class="radio-option" onchange="updateOptions()">
         <label for="budget-40-60" class="radio-label">₹40 - ₹60 Lakhs</label>
-        
-        <input type="radio" id="budget-60-90" name="budget" value="60-90" class="radio-option" onchange="updateOptions()">
-        <label for="budget-60-90" class="radio-label">₹60 - ₹90 Lakhs</label>
       </div>
     </div>
 
@@ -392,13 +389,11 @@ header("Pragma: no-cache");
       <h2>Preferred Amenities</h2>
       <div class="chip-container" id="amenities-container">
         <div class="chip" data-value="parking">Parking</div>
-        <div class="chip" data-value="lift">Lift</div>
-        <div class="chip" data-value="security">24/7 Security</div>
         <div class="chip" data-value="gym">Gym</div>
         <div class="chip" data-value="pool">Swimming Pool</div>
         <div class="chip" data-value="garden">Garden</div>
         <div class="chip" data-value="playarea">Children's Play Area</div>
-        <div class="chip" data-value="clubhouse">Clubhouse</div>
+    
       </div>
       <input type="hidden" id="amenities" name="amenities">
     </div>
@@ -406,14 +401,20 @@ header("Pragma: no-cache");
     <div class="form-section">
       <h2>Preferred Location in Kerala</h2>
       <div class="chip-container" id="location-container">
-        <div class="chip" data-value="Kochi">Kochi</div>
-        <div class="chip" data-value="Trivandrum">Trivandrum</div>
-        <div class="chip" data-value="Kozhikode">Kozhikode</div>
-        <div class="chip" data-value="Thrissur">Thrissur</div>
+        <div class="chip" data-value="Thiruvananthapuram">Thiruvananthapuram</div>
         <div class="chip" data-value="Kollam">Kollam</div>
+        <div class="chip" data-value="Pathanamthitta">Pathanamthitta</div>
         <div class="chip" data-value="Alappuzha">Alappuzha</div>
         <div class="chip" data-value="Kottayam">Kottayam</div>
+        <div class="chip" data-value="Idukki">Idukki</div>
+        <div class="chip" data-value="Ernakulam">Ernakulam</div>
+        <div class="chip" data-value="Thrissur">Thrissur</div>
+        <div class="chip" data-value="Palakkad">Palakkad</div>
         <div class="chip" data-value="Malappuram">Malappuram</div>
+        <div class="chip" data-value="Kozhikode">Kozhikode</div>
+        <div class="chip" data-value="Wayanad">Wayanad</div>
+        <div class="chip" data-value="Kannur">Kannur</div>
+        <div class="chip" data-value="Kasaragod">Kasaragod</div>
       </div>
       <input type="hidden" id="location" name="location" required>
     </div>
@@ -484,17 +485,8 @@ header("Pragma: no-cache");
         addRadioOption(bedroomsGroup, 'bedrooms', '3', '3 BHK');
         addRadioOption(bedroomsGroup, 'bedrooms', '4', '4 BHK');
         addRadioOption(floorGroup, 'floor', 'high', 'Higher Floors (8-12)');
-        addRadioOption(floorGroup, 'floor', 'pent', 'Penthouse');
-      } else if (budget === '60-90') {
-        addRadioOption(sizeGroup, 'size', '1400-1600', '1400-1600 Sq.ft (Premium)');
-        addRadioOption(sizeGroup, 'size', '1600-2000', '1600-2000 Sq.ft (Luxury)');
-        addRadioOption(bedroomsGroup, 'bedrooms', '3', '3 BHK');
-        addRadioOption(bedroomsGroup, 'bedrooms', '4', '4 BHK');
-        addRadioOption(bedroomsGroup, 'bedrooms', '5', '5 BHK');
-        addRadioOption(floorGroup, 'floor', 'high', 'Higher Floors (8-12)');
-        addRadioOption(floorGroup, 'floor', 'pent', 'Penthouse');
-        addRadioOption(floorGroup, 'floor', 'duplex', 'Duplex');
-      }
+        
+      } 
     }
 
     // Helper function to add radio options

@@ -10,23 +10,18 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: index.html");
     exit();
 }
-?>
 
+$user_name = $_SESSION['user_name'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Pick Mode - Pick My Home</title>
   <style>
+    /* Keep all your existing styles */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body {
       min-height: 100vh;
       background: #f5f7fa;
@@ -36,15 +31,14 @@ if (!isset($_SESSION['user_id'])) {
       position: relative;
       overflow-x: hidden;
     }
-     body::before {
+    body::before {
       content: "";
       position: absolute;
       inset: 0;
       background: url('welcome.jpg.jpg') no-repeat center center/cover;
       opacity: 1;
       z-index: 0;
-     }
-
+    }
     header {
       background: #2c3e50;
       color: white;
@@ -58,7 +52,6 @@ if (!isset($_SESSION['user_id'])) {
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       animation: slideDown 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
     .logo {
       font-size: 28px;
       font-weight: 700;
@@ -68,54 +61,37 @@ if (!isset($_SESSION['user_id'])) {
       align-items: center;
       gap: 10px;
     }
-
     .logo::before {
       content: "🏡";
       font-size: 32px;
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
     }
-
-    .logout {
-      background: #e74c3c;
+    .header-buttons {
+      display: flex;
+      gap: 15px;
+    }
+    .logout, .activities {
+      background: #c35902ff;
       border: none;
-      padding: 10px 25px;
+      padding: 10px 20px;
       color: white;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.4s ease;
       font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      transition: all 0.3s ease;
     }
-
-    .logout:hover {
+    .logout:hover, .activities:hover {
       background: #c0392b;
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
-
-    .logout::after {
-      content: "→";
-      font-size: 18px;
-      transition: transform 0.3s ease;
-    }
-
-    .logout:hover::after {
-      transform: translateX(3px);
-    }
-
     h2 {
       margin: 40px 0 20px;
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       color: #ffffff;
       z-index: 1;
       position: relative;
       text-align: center;
-      opacity: 0;
       animation: fadeIn 1s ease 0.3s forwards;
     }
-
     h2::after {
       content: "";
       display: block;
@@ -125,7 +101,6 @@ if (!isset($_SESSION['user_id'])) {
       margin: 15px auto 0;
       border-radius: 2px;
     }
-
     .card-container {
       display: flex;
       gap: 40px;
@@ -136,7 +111,6 @@ if (!isset($_SESSION['user_id'])) {
       padding: 0 5%;
       margin: 30px 0 80px;
     }
-
     .option-card {
       background: white;
       padding: 40px 30px;
@@ -146,168 +120,53 @@ if (!isset($_SESSION['user_id'])) {
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       cursor: pointer;
-      border: 1px solid rgba(0, 0, 0, 0.1);
       position: relative;
-      overflow: hidden;
       transform: translateY(50px);
       opacity: 0;
       animation: cardEntry 0.8s ease forwards;
     }
-
     .option-card:nth-child(1) { animation-delay: 0.4s; }
     .option-card:nth-child(2) { animation-delay: 0.6s; }
     .option-card:nth-child(3) { animation-delay: 0.8s; }
-
-    .option-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: #3498db;
-    }
-
-    .option-card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .option-card h3 {
-      font-size: 1.8rem;
-      margin: 25px 0 20px;
-      color: #2c3e50;
-      position: relative;
-      font-weight: 600;
-    }
-
-    .option-card p {
-      color: #7f8c8d;
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 30px;
-    }
-
-    .option-card a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .emoji {
-      font-size: 70px;
-      margin-bottom: 20px;
-      display: inline-block;
-      transition: transform 0.5s ease;
-    }
-
-    .option-card:hover .emoji {
-      animation: bounce 1s ease;
-    }
-
+    .option-card h3 { font-size: 1.8rem; margin: 25px 0 20px; color: #2c3e50; font-weight: 600; }
+    .option-card p { color: #7f8c8d; font-size: 1rem; margin-bottom: 30px; }
+    .option-card a { text-decoration: none; color: inherit; display: block; }
+    .emoji { font-size: 70px; margin-bottom: 20px; }
     .btn-explore {
       background: #171736;
       color: white;
-      border: none;
       padding: 14px 30px;
+      border: none;
       border-radius: 50px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.4s ease;
-      box-shadow: 0 5px 15px rgba(243, 244, 245, 0.3);
-      margin-top: 15px;
-      position: relative;
-      overflow: hidden;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
     }
-
-    .btn-explore::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: 0.5s;
-    }
-
-    .btn-explore:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(189, 192, 193, 0.4);
-    }
-
-    .btn-explore:hover::before {
-      left: 100%;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      25% { transform: translateY(-15px); }
-      50% { transform: translateY(0); }
-      75% { transform: translateY(-7px); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes cardEntry {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 1200px) {
-      .card-container {
-        gap: 30px;
-      }
-      .option-card {
-        width: 300px;
-      }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes cardEntry { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
     @media (max-width: 768px) {
-      h2 {
-        font-size: 2.2rem;
-        margin: 30px 0 15px;
-      }
-      .card-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .option-card {
-        width: 90%;
-        max-width: 400px;
-      }
+      .card-container { flex-direction: column; align-items: center; }
+      .option-card { width: 90%; max-width: 400px; }
     }
   </style>
 </head>
 <script>
   if (window.performance && window.performance.navigation.type === 2) {
-    // If user pressed back button
     window.location.href = 'index.html';
   }
 </script>
 <body>
-
   <header>
     <div class="logo">Pick My Home</div>
-    <a href="build.html"></a>
-    <button type="button" class="logout" onclick="window.location.href='logout.php'">Logout</button>
+    <div class="header-buttons">
+      <button class="activities" onclick="window.location.href='my_activities.php'">🛒 View My Activities</button>
+      <button class="logout" onclick="window.location.href='logout.php'">Logout</button>
+    </div>
   </header>
 
-  <h2>What Would You Like To Do?</h2>
+  <h2><?php echo htmlspecialchars($user_name); ?>, what are you looking for?</h2>
 
   <div class="card-container">
-    <!-- Buy Home -->
     <div class="option-card">
       <a href="build.php">
         <div class="emoji">🏠</div>
@@ -316,8 +175,6 @@ if (!isset($_SESSION['user_id'])) {
         <button class="btn-explore">View Homes</button>
       </a>
     </div>
-
-    <!-- Buy Flat -->
     <div class="option-card">
       <a href="flat.php">
         <div class="emoji">🏢</div>
@@ -326,10 +183,8 @@ if (!isset($_SESSION['user_id'])) {
         <button class="btn-explore">View Flats</button>
       </a>
     </div>
-
-    <!-- Sell Property -->
     <div class="option-card">
-      <a href="sell.html">
+      <a href="sell.php">
         <div class="emoji">🔄</div>
         <h3>Sell Your Property</h3>
         <p>Let us renovate and sell your property for maximum value. Our expert team handles everything from design to final sale with guaranteed results.</p>
@@ -337,25 +192,5 @@ if (!isset($_SESSION['user_id'])) {
       </a>
     </div>
   </div>
-
-  <script>
-    // Add ripple effect to buttons
-    document.querySelectorAll('.btn-explore, .logout').forEach(button => {
-      button.addEventListener('click', function(e) {
-        let x = e.clientX - e.target.getBoundingClientRect().left;
-        let y = e.clientY - e.target.getBoundingClientRect().top;
-        
-        let ripple = document.createElement('span');
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        this.appendChild(ripple);
-        
-        setTimeout(() => {
-          ripple.remove();
-        }, 1000);
-      });
-    });
-
-  </script>
 </body>
 </html>
